@@ -19,8 +19,22 @@ namespace TheAgoraAPI.Repositories
         public async Task<List<User>> GetUsers()
         {
             var users = await dbContext.Users.ToListAsync();
-            //Include(x=>x.UserId).
             return users;
+        }
+
+        public Task<User> GetUserByEmailAndPassword(string email, string password)
+        {
+            var user = dbContext.Users
+                                .Where(x => x.Email.Equals(email) && x.Password.Equals(password))
+                                .FirstOrDefault();
+            return Task.FromResult(user);
+        }
+
+        public async Task<int> Register(User user)
+        {
+            dbContext.Users.Add(user);
+            await dbContext.SaveChangesAsync();
+            return user.UserId;
         }
     }
 }
