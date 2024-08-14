@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TheAgoraAPI.Models;
-
-public partial class ForumPost
+namespace TheAgoraAPI.Models
 {
-    public int PostId { get; set; }
+    public partial class ForumPost
+    {
+        public int PostId { get; set; }
 
-    public int? UserId { get; set; }
+        public int? UserId { get; set; }
 
-    public string? Content { get; set; }
+        public string? Title { get; set; } // Added Title attribute
 
-    public DateTime? DateAndTimeOfCreation { get; set; }
+        public string? Content { get; set; }
 
-    public int? NumberOfLikes { get; set; }
+        public DateTime? DateAndTimeOfCreation { get; set; }
 
-    public bool? IsApproved { get; set; }
+        public int? NumberOfLikes { get; set; }
 
-    public string? Image { get; set; }
+        public bool? IsApproved { get; set; }
 
-    public string? Tags { get; set; }
+        public byte[]? Image { get; set; } // Changed from string to byte[]
 
-    public virtual ICollection<ForumComment> ForumComments { get; set; } = new List<ForumComment>();
+        public string? Tags { get; set; }
 
-    public virtual User? User { get; set; }
+        public virtual ICollection<ForumComment> ForumComments { get; set; } = new List<ForumComment>();
+
+        public virtual User? User { get; set; }
+    }
 }

@@ -30,11 +30,11 @@ namespace TheAgoraAPI.Repositories
             return Task.FromResult(user);
         }
 
-        public async Task<int> Register(User user)
+        public async Task<User> Register(User user)
         {
             dbContext.Users.Add(user);
             await dbContext.SaveChangesAsync();
-            return user.UserId;
+            return user;
         }
     }
 }

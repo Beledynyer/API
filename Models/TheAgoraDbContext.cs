@@ -8,6 +8,7 @@ public partial class TheAgoraDbContext : DbContext
 {
     public TheAgoraDbContext()
     {
+
     }
 
     public TheAgoraDbContext(DbContextOptions<TheAgoraDbContext> options)
@@ -33,10 +34,29 @@ public partial class TheAgoraDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=tcp:agoraserver.database.windows.net,1433;Initial Catalog=TheAgoraDB;Persist Security Info=False;User ID=NK;Password=p@ssword123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+        => optionsBuilder.UseSqlServer("Server=tcp:agoraserver.database.windows.net,1433;Initial Catalog=TheAgoraDB;Persist Security Info=False;User ID=NK;Password=p@ssword123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=30;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        //modelBuilder.Entity<Announcement>(entity =>
+        //{
+        //    entity.HasKey(e => e.AnnouncementId).HasName("PK__Announce__9DE4455444B6AE73");
+
+        //    entity.ToTable("Announcement");
+
+        //    entity.Property(e => e.AnnouncementId).HasColumnName("AnnouncementID");
+        //    entity.Property(e => e.AnnouncementType).HasMaxLength(50);
+        //    entity.Property(e => e.Campus).HasMaxLength(100);
+        //    entity.Property(e => e.DateAndTimeOfCreation)
+        //        .HasColumnType("datetime")
+        //        .HasColumnName("Date_and_time_of_creation");
+        //    entity.Property(e => e.Title).HasMaxLength(100);
+        //    entity.Property(e => e.UserId).HasColumnName("UserID");
+
+        //    entity.HasOne(d => d.User).WithMany(p => p.Announcements)
+        //        .HasForeignKey(d => d.UserId)
+        //        .HasConstraintName("FK__Announcem__UserI__6B24EA82");
+        //});
         modelBuilder.Entity<Announcement>(entity =>
         {
             entity.HasKey(e => e.AnnouncementId).HasName("PK__Announce__9DE4455444B6AE73");
@@ -50,6 +70,7 @@ public partial class TheAgoraDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Date_and_time_of_creation");
             entity.Property(e => e.Title).HasMaxLength(100);
+            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); // Updated to byte[]
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.Announcements)
@@ -145,6 +166,24 @@ public partial class TheAgoraDbContext : DbContext
                 .HasConstraintName("FK__ForumComm__UserI__6754599E");
         });
 
+        //modelBuilder.Entity<ForumPost>(entity =>
+        //{
+        //    entity.HasKey(e => e.PostId).HasName("PK__ForumPos__AA1260389AD44669");
+
+        //    entity.ToTable("ForumPost");
+
+        //    entity.Property(e => e.PostId).HasColumnName("PostID");
+        //    entity.Property(e => e.DateAndTimeOfCreation)
+        //        .HasColumnType("datetime")
+        //        .HasColumnName("Date_and_time_of_creation");
+        //    entity.Property(e => e.NumberOfLikes).HasColumnName("Number_of_likes");
+        //    entity.Property(e => e.UserId).HasColumnName("UserID");
+
+        //    entity.HasOne(d => d.User).WithMany(p => p.ForumPosts)
+        //        .HasForeignKey(d => d.UserId)
+        //        .HasConstraintName("FK__ForumPost__UserI__619B8048");
+        //});
+
         modelBuilder.Entity<ForumPost>(entity =>
         {
             entity.HasKey(e => e.PostId).HasName("PK__ForumPos__AA1260389AD44669");
@@ -157,11 +196,31 @@ public partial class TheAgoraDbContext : DbContext
                 .HasColumnName("Date_and_time_of_creation");
             entity.Property(e => e.NumberOfLikes).HasColumnName("Number_of_likes");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.Title).HasMaxLength(100); // Added Title property
+            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); // Updated to byte[]
 
             entity.HasOne(d => d.User).WithMany(p => p.ForumPosts)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK__ForumPost__UserI__619B8048");
         });
+
+        //modelBuilder.Entity<MarketListing>(entity =>
+        //{
+        //    entity.HasKey(e => e.ListingId).HasName("PK__MarketLi__BF3EBEF0537BA84B");
+
+        //    entity.ToTable("MarketListing");
+
+        //    entity.Property(e => e.ListingId).HasColumnName("ListingID");
+        //    entity.Property(e => e.Category).HasMaxLength(50);
+        //    entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+        //    entity.Property(e => e.Title).HasMaxLength(100);
+        //    entity.Property(e => e.UserId).HasColumnName("UserID");
+
+        //    entity.HasOne(d => d.User).WithMany(p => p.MarketListings)
+        //        .HasForeignKey(d => d.UserId)
+        //        .HasConstraintName("FK__MarketLis__UserI__5EBF139D");
+        //});
+
 
         modelBuilder.Entity<MarketListing>(entity =>
         {
@@ -173,6 +232,7 @@ public partial class TheAgoraDbContext : DbContext
             entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.Title).HasMaxLength(100);
+            entity.Property(e => e.Images).HasColumnType("varbinary(max)"); // Updated to byte[]
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.MarketListings)
