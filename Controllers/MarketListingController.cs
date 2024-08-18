@@ -14,7 +14,7 @@ namespace TheAgoraAPI.Controllers
         }
 
         [HttpGet("GetMarketListings")]
-        public async Task<IActionResult> GetUsers()
+        public async Task<IActionResult> GetMarketListings()
         {
             try
             {
