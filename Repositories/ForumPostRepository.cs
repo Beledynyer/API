@@ -1,4 +1,6 @@
 ﻿
+using TheAgoraAPI.Models;
+
 namespace TheAgoraAPI.Repositories
 {
     public class ForumPostRepository : IForumPostRepository
@@ -11,9 +13,11 @@ namespace TheAgoraAPI.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task<ForumPost> CreateForumPost(ForumPost post)
+        public async Task<ForumPost> CreateForumPost(ForumPost post)
         {
-            throw new NotImplementedException();
+            dbContext.ForumPosts.Add(post);
+            await dbContext.SaveChangesAsync();
+            return post;
         }
 
         public Task<ForumPost> GetForumPostById(int id)
