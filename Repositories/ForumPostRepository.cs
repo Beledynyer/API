@@ -30,5 +30,11 @@ namespace TheAgoraAPI.Repositories
             var posts = await dbContext.ForumPosts.ToListAsync();
             return posts;
         }
+
+        public async Task<int>  DeleteForumPost(int id)
+        {
+            var rowsAffected = await dbContext.ForumPosts.Where(x => x.PostId == id).ExecuteDeleteAsync();
+            return rowsAffected;
+        }
     }
 }

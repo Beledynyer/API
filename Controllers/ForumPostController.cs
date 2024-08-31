@@ -2,7 +2,7 @@
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ForumPostController :ControllerBase
+    public class ForumPostController : ControllerBase
     {
         private readonly IForumPostRepository forumPostRepository;
 
@@ -45,6 +45,19 @@
 
                 var createdPost = await forumPostRepository.CreateForumPost(newPost);
                 return Ok(createdPost);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpDelete("DeleteForumPost")]
+        public async Task<IActionResult> DeleteForumPost(int id)
+        {
+            try
+            {
+                var rowsAffected = await forumPostRepository.DeleteForumPost(id);
+                return Ok(rowsAffected);
             }
             catch (Exception ex)
             {
