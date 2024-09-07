@@ -20,9 +20,10 @@ namespace TheAgoraAPI.Repositories
             return post;
         }
 
-        public Task<ForumPost> GetForumPostById(int id)
+        public  Task<ForumPost> GetForumPostById(int id)
         {
-            throw new NotImplementedException();
+            var posts = dbContext.ForumPosts.Where(x => x.PostId == id).FirstOrDefault();
+            return Task.FromResult(posts);
         }
 
         public async Task<List<ForumPost>> GetForumPosts()

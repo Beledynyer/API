@@ -1,4 +1,6 @@
-﻿namespace TheAgoraAPI.Controllers
+﻿using TheAgoraAPI.Repositories;
+
+namespace TheAgoraAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -58,6 +60,19 @@
             {
                 var rowsAffected = await forumPostRepository.DeleteForumPost(id);
                 return Ok(rowsAffected);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("GetForumPostById")]
+        public async Task<IActionResult> GetForumPostById(int id)
+        {
+            try
+            {
+                var post = await forumPostRepository.GetForumPostById(id);
+                return Ok(post);
             }
             catch (Exception ex)
             {
