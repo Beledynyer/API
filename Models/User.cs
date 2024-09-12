@@ -30,4 +30,5 @@ public partial class User
     public virtual ICollection<ForumPost> ForumPosts { get; set; } = new List<ForumPost>();
 
     public virtual ICollection<MarketListing> MarketListings { get; set; } = new List<MarketListing>();
+    public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
 }

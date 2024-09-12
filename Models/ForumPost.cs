@@ -26,5 +26,6 @@ namespace TheAgoraAPI.Models
         public virtual ICollection<ForumComment> ForumComments { get; set; } = new List<ForumComment>();
 
         public virtual User? User { get; set; }
+        public virtual ICollection<Like> Likes { get; set; } = new List<Like>();
     }
 }
