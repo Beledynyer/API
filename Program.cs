@@ -19,6 +19,7 @@ builder.Services.AddDbContext<TheAgoraDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMarketListingRepository, MarketListingRepository>();
 builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
+builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 
 //configure swagger
 builder.Services.AddEndpointsApiExplorer();
