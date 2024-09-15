@@ -32,6 +32,7 @@ namespace TheAgoraAPI.Repositories
                 UserId = userId,
                 ForumPostId = forumPostId
             };
+
             _context.Likes.Add(newLike);
             await _context.SaveChangesAsync();
             return true;

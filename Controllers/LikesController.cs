@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TheAgoraAPI.Interfaces;
 
 namespace TheAgoraAPI.Controllers
 {
@@ -18,6 +17,7 @@ namespace TheAgoraAPI.Controllers
         public async Task<IActionResult> ToggleLike(int userId, int forumPostId)
         {
             var existingLike = await _likeRepository.GetLikeAsync(userId, forumPostId);
+
             if (existingLike == null)
             {
                 // Like doesn't exist, so add it
