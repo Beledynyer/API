@@ -59,11 +59,18 @@ namespace TheAgoraAPI.Controllers
             try
             {
                 var rowsAffected = await forumPostRepository.DeleteForumPost(id);
-                return Ok(rowsAffected);
+                if (rowsAffected > 0)
+                {
+                    return Ok(new { message = "Forum post and associated likes deleted successfully." });
+                }
+                else
+                {
+                    return NotFound(new { message = "Forum post not found." });
+                }
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(500, new { message = "An error occurred while deleting the forum post.", error = ex.Message });
             }
         }
         [HttpGet("GetForumPostById")]

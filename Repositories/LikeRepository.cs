@@ -60,5 +60,15 @@ namespace TheAgoraAPI.Repositories
         {
             return await _context.Likes.AnyAsync(l => l.UserId == userId && l.ForumPostId == forumPostId);
         }
+
+        public async Task RemoveAllLikesForPostAsync(int forumPostId)
+        {
+            var likesToRemove = await _context.Likes
+                .Where(l => l.ForumPostId == forumPostId)
+                .ToListAsync();
+
+            _context.Likes.RemoveRange(likesToRemove);
+            await _context.SaveChangesAsync();
+        }
     }
 }
