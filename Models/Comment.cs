@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace TheAgoraAPI.Models;
 
@@ -13,7 +14,9 @@ public partial class Comment
 
     public DateTime? DateAndTimeOfCreation { get; set; }
 
+    [JsonIgnore]
     public virtual AnnouncementComment? AnnouncementComment { get; set; }
 
+    [JsonIgnore]
     public virtual ForumComment? ForumComment { get; set; }
 }

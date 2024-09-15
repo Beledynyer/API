@@ -1,4 +1,4 @@
-﻿namespace TheAgoraAPI.Models
+﻿namespace TheAgoraAPI.DTOs
 {
     public class UserRegistrationDto
     {

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using TheAgoraAPI.DTOs;
 
 namespace TheAgoraAPI.Controllers
 {

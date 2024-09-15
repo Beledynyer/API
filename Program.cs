@@ -3,6 +3,7 @@ global using TheAgoraAPI.Models;
 global using TheAgoraAPI.Interfaces;
 global using TheAgoraAPI.Repositories;
 global using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMarketListingRepository, MarketListingRepository>();
 builder.Services.AddScoped<IForumPostRepository, ForumPostRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
+builder.Services.AddScoped<IForumCommentRepository, ForumCommentRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 //configure swagger
 builder.Services.AddEndpointsApiExplorer();

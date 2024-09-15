@@ -1,4 +1,5 @@
-﻿using TheAgoraAPI.Repositories;
+﻿using TheAgoraAPI.DTOs;
+using TheAgoraAPI.Repositories;
 
 namespace TheAgoraAPI.Controllers
 {
@@ -61,7 +62,7 @@ namespace TheAgoraAPI.Controllers
                 var rowsAffected = await forumPostRepository.DeleteForumPost(id);
                 if (rowsAffected > 0)
                 {
-                    return Ok(new { message = "Forum post and associated likes deleted successfully." });
+                    return Ok(new { message = "Forum post, associated comments, and likes deleted successfully." });
                 }
                 else
                 {
