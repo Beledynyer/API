@@ -13,7 +13,7 @@
             _commentRepository = commentRepository;
         }
 
-        [HttpGet("GetComments")]
+        [HttpGet("GetForumComments")]
         public async Task<IActionResult> GetCommentsForPost(int postId)
         {
             var comments = await _forumCommentRepository.GetCommentsForPostAsync(postId);

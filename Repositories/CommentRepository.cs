@@ -1,6 +1,10 @@
-﻿namespace TheAgoraAPI.Repositories
+﻿using Microsoft.EntityFrameworkCore;
+using TheAgoraAPI.Interfaces;
+using TheAgoraAPI.Models;
+
+namespace TheAgoraAPI.Repositories
 {
-    public class CommentRepository:ICommentRepository
+    public class CommentRepository : ICommentRepository
     {
         private readonly TheAgoraDbContext _context;
 
@@ -21,10 +25,14 @@
             var comment = await _context.Comments.FindAsync(commentId);
             if (comment == null)
                 return false;
-
             _context.Comments.Remove(comment);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<Comment?> GetCommentByIdAsync(int commentId)
+        {
+            return await _context.Comments.FindAsync(commentId);
         }
     }
 }

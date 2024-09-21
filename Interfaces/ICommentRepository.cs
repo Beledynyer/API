@@ -4,5 +4,6 @@
     {
         Task<Comment> AddCommentAsync(Comment comment);
         Task<bool> DeleteCommentAsync(int commentId);
+        Task<Comment?> GetCommentByIdAsync(int commentId);
     }
 }
