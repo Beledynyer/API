@@ -1,5 +1,7 @@
-﻿using TheAgoraAPI.DTOs;
-using TheAgoraAPI.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using TheAgoraAPI.DTOs;
+using TheAgoraAPI.Models;
+using TheAgoraAPI.Interfaces;
 
 namespace TheAgoraAPI.Controllers
 {
@@ -14,12 +16,12 @@ namespace TheAgoraAPI.Controllers
             this.forumPostRepository = forumPostRepository;
         }
 
-        [HttpGet("GetForumPosts")]
-        public async Task<IActionResult> GetForumPosts()
+        [HttpGet("GetApprovedForumPosts")]
+        public async Task<IActionResult> GetApprovedForumPosts()
         {
             try
             {
-                var forumPosts = await forumPostRepository.GetForumPosts();
+                var forumPosts = await forumPostRepository.GetApprovedForumPosts();
                 return Ok(forumPosts);
             }
             catch (Exception ex)
@@ -27,12 +29,26 @@ namespace TheAgoraAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("GetUnapprovedForumPosts")]
+        public async Task<IActionResult> GetUnapprovedForumPosts()
+        {
+            try
+            {
+                var forumPosts = await forumPostRepository.GetUnapprovedForumPosts();
+                return Ok(forumPosts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("CreateForumPost")]
         public async Task<IActionResult> CreateForumPost([FromBody] ForumPostCreationDto newPostDto)
         {
             try
             {
-                // Map the DTO to your ForumPost model
                 var newPost = new ForumPost
                 {
                     PostId = newPostDto.PostId,
@@ -45,7 +61,6 @@ namespace TheAgoraAPI.Controllers
                     Image = newPostDto.Image,
                     Tags = newPostDto.Tags
                 };
-
                 var createdPost = await forumPostRepository.CreateForumPost(newPost);
                 return Ok(createdPost);
             }
@@ -54,6 +69,7 @@ namespace TheAgoraAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
         [HttpDelete("DeleteForumPost")]
         public async Task<IActionResult> DeleteForumPost(int id)
         {
@@ -74,6 +90,7 @@ namespace TheAgoraAPI.Controllers
                 return StatusCode(500, new { message = "An error occurred while deleting the forum post.", error = ex.Message });
             }
         }
+
         [HttpGet("GetForumPostById")]
         public async Task<IActionResult> GetForumPostById(int id)
         {
@@ -85,6 +102,24 @@ namespace TheAgoraAPI.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("ApproveForumPost/{id}")]
+        public async Task<IActionResult> ApproveForumPost(int id)
+        {
+            try
+            {
+                var approvedPost = await forumPostRepository.ApproveForumPost(id);
+                return Ok(approvedPost);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while approving the forum post.", error = ex.Message });
             }
         }
     }

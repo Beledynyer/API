@@ -1,12 +1,11 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TheAgoraAPI.Models;
+using TheAgoraAPI.Interfaces;
 
 namespace TheAgoraAPI.Repositories
 {
     public class ForumPostRepository : IForumPostRepository
     {
-
         private readonly TheAgoraDbContext dbContext;
         private readonly ILikeRepository likeRepository;
         private readonly ICommentRepository commentRepository;
@@ -25,15 +24,21 @@ namespace TheAgoraAPI.Repositories
             return post;
         }
 
-        public  Task<ForumPost> GetForumPostById(int id)
+        public Task<ForumPost> GetForumPostById(int id)
         {
             var posts = dbContext.ForumPosts.Where(x => x.PostId == id).FirstOrDefault();
             return Task.FromResult(posts);
         }
 
-        public async Task<List<ForumPost>> GetForumPosts()
+        public async Task<List<ForumPost>> GetApprovedForumPosts()
         {
-            var posts = await dbContext.ForumPosts.ToListAsync();
+            var posts = await dbContext.ForumPosts.Where(p => p.IsApproved == true).ToListAsync();
+            return posts;
+        }
+
+        public async Task<List<ForumPost>> GetUnapprovedForumPosts()
+        {
+            var posts = await dbContext.ForumPosts.Where(p => p.IsApproved == false).ToListAsync();
             return posts;
         }
 
@@ -41,7 +46,7 @@ namespace TheAgoraAPI.Repositories
         {
             var post = await dbContext.ForumPosts
                 .Include(p => p.ForumComments)
-                .ThenInclude(fc => fc.Comment) // Include the associated Comment
+                .ThenInclude(fc => fc.Comment)
                 .FirstOrDefaultAsync(p => p.PostId == id);
 
             if (post == null)
@@ -49,24 +54,26 @@ namespace TheAgoraAPI.Repositories
                 return 0;
             }
 
-            // Collect the associated Comment entities
             var commentsToDelete = post.ForumComments.Select(fc => fc.Comment).ToList();
-
-            // Remove associated forum comments first
             dbContext.ForumComments.RemoveRange(post.ForumComments);
-
-            // Then, remove the comments
             dbContext.Comments.RemoveRange(commentsToDelete);
-
-            // First, remove all likes associated with this post
             await likeRepository.RemoveAllLikesForPostAsync(id);
 
-            // Then, delete the forum post
             var rowsAffected = await dbContext.ForumPosts.Where(x => x.PostId == id).ExecuteDeleteAsync();
-
             return rowsAffected;
         }
 
+        public async Task<ForumPost> ApproveForumPost(int id)
+        {
+            var post = await dbContext.ForumPosts.FindAsync(id);
+            if (post == null)
+            {
+                throw new KeyNotFoundException($"Forum post with ID {id} not found.");
+            }
 
+            post.IsApproved = true;
+            await dbContext.SaveChangesAsync();
+            return post;
+        }
     }
 }
