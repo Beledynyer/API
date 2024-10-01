@@ -122,5 +122,50 @@ namespace TheAgoraAPI.Controllers
                 return StatusCode(500, new { message = "An error occurred while approving the forum post.", error = ex.Message });
             }
         }
+
+        [HttpGet("SearchByTitle")]
+        public async Task<IActionResult> SearchForumPostsByTitle([FromQuery] string searchString)
+        {
+            try
+            {
+                var forumPosts = await forumPostRepository.SearchForumPostsByTitle(searchString);
+                return Ok(forumPosts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("FilterByTags")]
+        public async Task<IActionResult> FilterForumPostsByTags([FromQuery] List<string> tags)
+        {
+            try
+            {
+                var forumPosts = await forumPostRepository.FilterForumPostsByTags(tags);
+                return Ok(forumPosts);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut("UpdateNumberOfLikes/{id}")]
+        public async Task<IActionResult> UpdateNumberOfLikes(int id, [FromBody] int numberOfLikes)
+        {
+            try
+            {
+                var updatedPost = await forumPostRepository.UpdateNumberOfLikes(id, numberOfLikes);
+                return Ok(updatedPost);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred while updating the number of likes.", error = ex.Message });
+            }
+        }
     }
 }

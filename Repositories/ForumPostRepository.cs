@@ -75,5 +75,46 @@ namespace TheAgoraAPI.Repositories
             await dbContext.SaveChangesAsync();
             return post;
         }
+
+
+        //The git changes you are seeing , are this two methods , which are not needed 
+        //cuz I added this functionality on the android app 
+        // but whatever
+        public async Task<List<ForumPost>> SearchForumPostsByTitle(string searchString)
+        {
+            if (string.IsNullOrWhiteSpace(searchString))
+            {
+                return await GetApprovedForumPosts();
+            }
+
+            return await dbContext.ForumPosts
+                .Where(p => p.IsApproved == true && p.Title.Contains(searchString))
+                .ToListAsync();
+        }
+
+        public async Task<List<ForumPost>> FilterForumPostsByTags(List<string> tags)
+        {
+            if (tags == null || !tags.Any())
+            {
+                return await GetApprovedForumPosts();
+            }
+
+            return await dbContext.ForumPosts
+                .Where(p => p.IsApproved == true && tags.Any(tag => p.Tags.Contains(tag)))
+                .ToListAsync();
+        }
+
+        public async Task<ForumPost> UpdateNumberOfLikes(int postId, int numberOfLikes)
+        {
+            var post = await dbContext.ForumPosts.FindAsync(postId);
+            if (post == null)
+            {
+                throw new KeyNotFoundException($"Forum post with ID {postId} not found.");
+            }
+
+            post.NumberOfLikes = numberOfLikes;
+            await dbContext.SaveChangesAsync();
+            return post;
+        }
     }
 }
