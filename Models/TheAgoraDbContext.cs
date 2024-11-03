@@ -32,7 +32,7 @@ public partial class TheAgoraDbContext : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<Like> Likes { get; set; }  // Add this line
+    public virtual DbSet<Like> Likes { get; set; } 
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
@@ -53,7 +53,7 @@ public partial class TheAgoraDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Date_and_time_of_creation");
             entity.Property(e => e.Title).HasMaxLength(100);
-            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); // Updated to byte[]
+            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); 
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.Announcements)
@@ -162,8 +162,8 @@ public partial class TheAgoraDbContext : DbContext
                 .HasColumnName("Date_and_time_of_creation");
             entity.Property(e => e.NumberOfLikes).HasColumnName("Number_of_likes");
             entity.Property(e => e.UserId).HasColumnName("UserID");
-            entity.Property(e => e.Title).HasMaxLength(100); // Added Title property
-            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); // Updated to byte[]
+            entity.Property(e => e.Title).HasMaxLength(100); 
+            entity.Property(e => e.Image).HasColumnType("varbinary(max)"); 
 
             entity.HasOne(d => d.User).WithMany(p => p.ForumPosts)
                 .HasForeignKey(d => d.UserId)
@@ -180,7 +180,7 @@ public partial class TheAgoraDbContext : DbContext
             entity.Property(e => e.Category).HasMaxLength(50);
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.Title).HasMaxLength(100);
-            entity.Property(e => e.Images).HasColumnType("varbinary(max)"); // Updated to byte[]
+            entity.Property(e => e.Images).HasColumnType("varbinary(max)"); 
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
             entity.HasOne(d => d.User).WithMany(p => p.MarketListings)
